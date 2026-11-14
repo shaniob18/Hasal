@@ -122,8 +122,8 @@ function lsGet(k,d){ try{const v=localStorage.getItem(k); return v==null?d:v;}ca
 function lsSet(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
 function saveLocal(){ lsSet('grocery-list',JSON.stringify(items)); }
 function loadLocal(){ try{return JSON.parse(lsGet('grocery-list','[]'));}catch(e){return [];} }
-function newCode(){ const a=new Uint8Array(18); crypto.getRandomValues(a); return Array.from(a,b=>'abcdefghjkmnpqrstuvwxyz23456789'[b%31]).join('').replace(/(.{6})(?=.)/g,'$1-'); }
-function familyCode(){ let c=lsGet('family-code',''); if(!c){ c=newCode(); lsSet('family-code',c);} return c; }
+function newCode(){ const a=new Uint8Array(30); crypto.getRandomValues(a); return Array.from(a,b=>'abcdefghjkmnpqrstuvwxyz23456789'[b%31]).join('').replace(/(.{6})(?=.)/g,'$1-'); }
+function familyCode(){ let c=lsGet('family-code',''); if(codeId(c).length<24){ c=newCode(); lsSet('family-code',c);} return c; }
 function codeId(c){ return c.replace(/[^a-z0-9]/gi,'').toLowerCase(); }
 async function save(){
   saveLocal();
@@ -151,7 +151,7 @@ async function connect(){
 }
 async function initDb(){
   // join via link: #f=CODE
-  const m=location.hash.match(/f=([a-z0-9-]{20,})/i);
+  const m=location.hash.match(/f=([a-z0-9-]{24,})/i);
   if(m){ lsSet('family-code',m[1].toLowerCase()); history.replaceState(null,'',location.pathname); }
   items=loadLocal(); render(); setSync(false);
   try{
@@ -176,7 +176,7 @@ function openShare(){
   const copy=async t=>{ try{await navigator.clipboard.writeText(t); $('#cpmsg').textContent='הועתק. שלחי בוואטסאפ.';}catch(e){ $('#cpmsg').textContent=t; } };
   $('#cpl').onclick=()=>copy(link); $('#cpc').onclick=()=>copy(c);
   $('#sclose').onclick=()=>{$('#modal').innerHTML='';};
-  $('#jbtn').onclick=async()=>{ const v=$('#jc').value.trim().toLowerCase().replace(/^.*#f=/,''); if(codeId(v).length<20){ $('#cpmsg').textContent='הקוד לא תקין'; return; }
+  $('#jbtn').onclick=async()=>{ const v=$('#jc').value.trim().toLowerCase().replace(/^.*#f=/,''); if(codeId(v).length<24){ $('#cpmsg').textContent='הקוד לא תקין'; return; }
     lsSet('family-code',v); items=[]; saveLocal(); $('#modal').innerHTML=''; await connect(); render(); };
 }
 document.addEventListener('click',e=>{ if(e.target.id==='share'){ e.preventDefault(); openShare(); } });

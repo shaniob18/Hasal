@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>הסל</title>
+<meta name="theme-color" content="#1f7a5a">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="הסל">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2321;--mute:#6b7370;--line:#e4e0d6;--acc:#1f7a5a;--acc2:#e8f3ee;--warn:#b5651d;--warn2:#fbf0e4;--red:#b3261e}
+*{box-sizing:border-box}
+body{margin:0;font-family:Assistant,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:16px}
+header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(14px + env(safe-area-inset-top)) 16px 0}
+h1{margin:0;font-size:22px;font-weight:800}
+.sub{color:var(--mute);font-size:13px;margin-top:2px}
+.tabs{display:flex;gap:6px;margin-top:12px;border-bottom:1px solid var(--line)}
+.tab{flex:1;padding:10px 0;border:0;background:none;font:inherit;font-weight:700;color:var(--mute);border-bottom:3px solid transparent;cursor:pointer}
+.tab.on{color:var(--acc);border-color:var(--acc)}
+main{padding:14px 16px 90px;max-width:720px;margin:0 auto}
+.search{position:relative}
+.search input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;background:var(--card)}
+.search input:focus{outline:none;border-color:var(--acc)}
+.results{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px;overflow:hidden}
+.res{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);cursor:pointer}
+.res:last-child{border:0}
+.res:hover{background:var(--acc2)}
+.res .n{font-weight:600}
+.res .m{font-size:12px;color:var(--mute)}
+.res .p{font-size:13px;color:var(--acc);white-space:nowrap;font-weight:700}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+.row{display:flex;align-items:center;gap:10px}
+.grow{flex:1;min-width:0}
+.iname{font-weight:700;line-height:1.25}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.chip{font-size:12px;padding:3px 8px;border-radius:999px;background:#f1efe9;color:var(--ink);border:0;font-family:inherit;cursor:default}
+.chip.miss{background:var(--warn2);color:var(--warn);cursor:pointer;text-decoration:underline}
+.chip.deal{background:var(--acc2);color:var(--acc)}
+.chip.alt{cursor:pointer}
+.qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.qty button{width:34px;height:34px;border:0;background:#f1efe9;font-size:18px;cursor:pointer}
+.qty span{min-width:38px;text-align:center;font-weight:700}
+.x{border:0;background:none;color:var(--mute);font-size:20px;cursor:pointer;padding:4px 6px}
+.empty{color:var(--mute);text-align:center;padding:30px 10px}
+.btn{display:inline-block;padding:11px 16px;border-radius:12px;border:0;background:var(--acc);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:none;color:var(--acc);border:1.5px solid var(--acc)}
+.store{padding:14px}
+.store.best{border:2px solid var(--acc);background:var(--acc2)}
+.sname{font-weight:800;font-size:18px}
+.saddr{font-size:12px;color:var(--mute)}
+.total{font-size:26px;font-weight:800;white-space:nowrap}
+.badge{display:inline-block;background:var(--acc);color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-inline-start:6px;vertical-align:middle}
+.note{font-size:13px;color:var(--mute);margin-top:6px}
+.warnline{font-size:13px;color:var(--warn);margin-top:6px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:start;vertical-align:top}
+th{font-size:12px;color:var(--mute);font-weight:700}
+td.num{white-space:nowrap;text-align:center}
+td.min{color:var(--acc);font-weight:800}
+td.na{color:#bbb;text-align:center}
+.small{font-size:12px;color:var(--mute)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.sheet{background:var(--bg);width:100%;max-width:720px;max-height:85vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.sheet h3{margin:0 0 4px}
+.status{font-size:13px;color:var(--mute);margin-top:8px}
+.foot{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+</style>
+</head>
+<body>
+<header>
+  <h1>השוואת סל קניות</h1>
+  <div class="sub" id="sub">טוען מחירים…</div>
+  <div class="tabs">
+    <button class="tab on" data-v="list">הרשימה שלי <span id="cnt"></span></button>
+    <button class="tab" data-v="cmp">איפה הכי זול?</button>
+  </div>
+</header>
+<main>
+  <section id="v-list">
+    <div class="search">
+      <input id="q" type="search" placeholder="מה נגמר? למשל: קוטג׳, במבה, חלב 3%" autocomplete="off">
+      <div class="results" id="res" hidden></div>
+    </div>
+    <div id="list"></div>
+    <div class="status" id="sync"></div>
+  </section>
+  <section id="v-cmp" hidden></section>
+</main>
+<div id="modal"></div>
+
+<script>
+let DATA=null, BY=new Map(), STORES=[], items=[], db=null, listDoc=null, saving=false, pending=false;
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=n=>'₪'+(Math.round(n*100)/100).toFixed(2);
+const norm=s=>String(s).replace(/[׳'"`״]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+
+// ---------- data ----------
+async function loadPrices(){
+  try{
+    const r=await fetch('prices.json',{cache:'no-store'});
+    DATA=await r.json();
+  }catch(e){ $('#sub').textContent='לא הצלחתי לטעון את המחירים'; return; }
+  STORES=DATA.stores;
+  for(const it of DATA.items){ it.push(norm(it[1]+' '+it[2])); BY.set(it[0],it); }
+  const d=new Date(DATA.updated);
+  $('#sub').textContent='מחירים מעודכנים ל־'+(isNaN(d)?DATA.updated:d.toLocaleDateString('he-IL',{day:'numeric',month:'numeric'})+' '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}))
+    +' · '+STORES.map(s=>s.name).join(' · ')+(DATA.missing?.length?' (חסרים נתונים: '+DATA.missing.length+')':'');
+  render();
+}
+
+// ---------- persistence: Firebase (shared by family code), fallback localStorage ----------
+const FB_CONFIG={apiKey:"AIzaSyAjdGkHwj0NYvHTX3O4gWJho6e9XEMJGxw",authDomain:"hasal-f1192.firebaseapp.com",projectId:"hasal-f1192",storageBucket:"hasal-f1192.firebasestorage.app",messagingSenderId:"239188418535",appId:"1:239188418535:web:18a5f9b8ba74a3f876e742"};
+let FS=null, unsub=null;
+function lsGet(k,d){ try{const v=localStorage.getItem(k); return v==null?d:v;}catch(e){return d;} }
+function lsSet(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
+function saveLocal(){ lsSet('grocery-list',JSON.stringify(items)); }
+function loadLocal(){ try{return JSON.parse(lsGet('grocery-list','[]'));}catch(e){return [];} }
+function newCode(){ const a=new Uint8Array(18); crypto.getRandomValues(a); return Array.from(a,b=>'abcdefghjkmnpqrstuvwxyz23456789'[b%31]).join('').replace(/(.{6})(?=.)/g,'$1-'); }
+function familyCode(){ let c=lsGet('family-code',''); if(!c){ c=newCode(); lsSet('family-code',c);} return c; }
+function codeId(c){ return c.replace(/[^a-z0-9]/gi,'').toLowerCase(); }
+async function save(){
+  saveLocal();
+  if(!listDoc) return;
+  if(saving){pending=true;return;}
+  saving=true;
+  try{ await FS.setDoc(listDoc,{items:JSON.parse(JSON.stringify(items)), updatedAt:Date.now()}); setSync(true); }
+  catch(e){ setSync(false); }
+  saving=false; if(pending){pending=false;save();}
+}
+function setSync(ok){ $('#sync').innerHTML=(ok?'☁️ הרשימה משותפת':'📱 נשמר במכשיר בלבד (אין חיבור)')+' · <a href="#" id="share">שיתוף עם בן/בת הזוג</a>'; }
+async function connect(){
+  if(unsub){unsub();unsub=null;}
+  if(!FS) return;
+  listDoc=FS.doc(db,'lists',codeId(familyCode()));
+  let first=true;
+  unsub=FS.onSnapshot(listDoc,snap=>{
+    const v=snap.exists()?snap.data():null;
+    if(first){ first=false;
+      if(v&&Array.isArray(v.items)&&(v.items.length||!items.length)) items=v.items;
+      else if(items.length) save();
+    } else if(v&&Array.isArray(v.items)&&!saving&&!snap.metadata.hasPendingWrites){ items=v.items; }
+    saveLocal(); render(); setSync(true);
+  }, ()=>setSync(false));
+}
+async function initDb(){
+  // join via link: #f=CODE
+  const m=location.hash.match(/f=([a-z0-9-]{20,})/i);
+  if(m){ lsSet('family-code',m[1].toLowerCase()); history.replaceState(null,'',location.pathname); }
+  items=loadLocal(); render(); setSync(false);
+  try{
+    const V='10.12.2';
+    const app=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
+    FS=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-firestore.js`);
+    db=FS.initializeFirestore(app.initializeApp(FB_CONFIG),{localCache:FS.persistentLocalCache()});
+    await connect();
+  }catch(e){ console.warn(e); setSync(false); }
+}
+function openShare(){
+  const c=familyCode(), link=location.origin+location.pathname+'#f='+c;
+  $('#modal').innerHTML=`<div class="modal"><div class="sheet"><h3>רשימה משותפת</h3>
+    <div class="small">כל מי שמחובר עם אותו קוד רואה ועורך את אותה רשימה.</div>
+    <div class="card"><div class="small">הקוד המשפחתי שלכם</div><div style="font-weight:800;font-size:18px;direction:ltr;text-align:left;word-break:break-all">${esc(c)}</div></div>
+    <div class="foot"><button class="btn" id="cpl">העתקת קישור הצטרפות</button><button class="btn ghost" id="cpc">העתקת הקוד</button></div>
+    <div class="note" id="cpmsg"></div>
+    <h3 style="margin-top:18px">הצטרפות לרשימה קיימת</h3>
+    <div class="small">קיבלת קוד? הדביקי אותו כאן. הרשימה במכשיר הזה תוחלף ברשימה המשותפת.</div>
+    <div class="search" style="margin-top:8px"><input id="jc" placeholder="הדבקת קוד" style="direction:ltr"></div>
+    <div class="foot"><button class="btn" id="jbtn">הצטרפות</button><button class="btn ghost" id="sclose">סגירה</button></div></div></div>`;
+  const copy=async t=>{ try{await navigator.clipboard.writeText(t); $('#cpmsg').textContent='הועתק. שלחי בוואטסאפ.';}catch(e){ $('#cpmsg').textContent=t; } };
+  $('#cpl').onclick=()=>copy(link); $('#cpc').onclick=()=>copy(c);
+  $('#sclose').onclick=()=>{$('#modal').innerHTML='';};
+  $('#jbtn').onclick=async()=>{ const v=$('#jc').value.trim().toLowerCase().replace(/^.*#f=/,''); if(codeId(v).length<20){ $('#cpmsg').textContent='הקוד לא תקין'; return; }
+    lsSet('family-code',v); items=[]; saveLocal(); $('#modal').innerHTML=''; await connect(); render(); };
+}
+document.addEventListener('click',e=>{ if(e.target.id==='share'){ e.preventDefault(); openShare(); } });
+
+// ---------- pricing ----------
+function priceAt(code,si,qty){
+  const it=code&&BY.get(code); if(!it) return null;
+  const reg=it[3][si]; if(reg==null) return null;
+  const pr=it[4][si];
+  if(pr && !pr[4] && qty>=pr[1]) return {cost:qty*pr[2], reg:qty*reg, promo:pr};
+  return {cost:qty*reg, reg:qty*reg, promo:pr||null};
+}
+function minPrice(it){ const ps=it[3].filter(p=>p!=null); return ps.length?Math.min(...ps):null; }
+
+// ---------- search ----------
+function search(q, onlyStore){
+  const words=norm(q).split(' ').filter(Boolean); if(!words.length) return [];
+  const out=[];
+  for(const it of DATA.items){
+    if(onlyStore!=null && it[3][onlyStore]==null) continue;
+    const h=it[6]; if(!words.every(w=>h.includes(w))) continue;
+    const have=it[3].filter(p=>p!=null).length;
+    const starts=h.startsWith(words[0])?1:0;
+    out.push([it,have*10+starts*5-it[1].length/40]);
+    if(out.length>4000) break;
+  }
+  return out.sort((a,b)=>b[1]-a[1]).slice(0,30).map(x=>x[0]);
+}
+function resHtml(list, si){
+  if(!list.length) return '<div class="res"><span class="m">לא נמצאו מוצרים</span></div>';
+  return list.map(it=>{
+    const p = si==null? minPrice(it) : it[3][si];
+    const where = si==null? it[3].map((p,i)=>p!=null?STORES[i].name:null).filter(Boolean).join(' · ') : (it[2]||'');
+    return `<div class="res" data-code="${esc(it[0])}"><div class="grow"><div class="n">${esc(it[1])}</div><div class="m">${esc(si==null?(it[2]?it[2]+' · ':'')+where:where)}</div></div><div class="p">${p!=null?(si==null?'מ־':'')+fmt(p):''}</div></div>`;
+  }).join('');
+}
+$('#q').addEventListener('input',e=>{
+  const q=e.target.value; const box=$('#res');
+  if(!DATA||norm(q).length<2){box.hidden=true;return;}
+  box.innerHTML=resHtml(search(q)); box.hidden=false;
+});
+$('#res').addEventListener('click',e=>{
+  const r=e.target.closest('.res[data-code]'); if(!r) return;
+  addItem(BY.get(r.dataset.code)); $('#q').value=''; $('#res').hidden=true;
+});
+function addItem(it){
+  const ex=items.find(x=>x.codes.includes(it[0]));
+  if(ex){ ex.qty+= it[5]?0.5:1; }
+  else items.unshift({id:Date.now().toString(36), name:it[1], qty: it[5]?1:1, w:it[5], codes:it[3].map(p=>p!=null?it[0]:null)});
+  save(); render();
+}
+
+// ---------- list view ----------
+function renderList(){
+  $('#cnt').textContent=items.length?`(${items.length})`:'';
+  if(!items.length){ $('#list').innerHTML='<div class="empty">הרשימה ריקה. חפשי מוצר שנגמר והוסיפי אותו.</div>'; return; }
+  $('#list').innerHTML=items.map(x=>{
+    const chips=STORES.map((s,i)=>{
+      const p=priceAt(x.codes[i],i,x.qty);
+      if(!p) return `<button class="chip miss" data-alt="${x.id}" data-si="${i}">${esc(s.name)}: לא נמצא · בחרי מקביל</button>`;
+      const other=x.codes[i]!==x.codes.find(Boolean);
+      return `<button class="chip ${p.cost<p.reg-0.001?'deal':''} alt" data-alt="${x.id}" data-si="${i}" title="החלפת מוצר">${esc(s.name)}: ${fmt(p.cost)}${p.cost<p.reg-0.001?' 🏷':''}${other?' *':''}</button>`;
+    }).join('');
+    return `<div class="card"><div class="row"><div class="grow"><div class="iname">${esc(x.name)}</div></div>
+      <div class="qty"><button data-dec="${x.id}">−</button><span>${x.w?x.qty+' ק״ג':x.qty}</span><button data-inc="${x.id}">+</button></div>
+      <button class="x" data-del="${x.id}" aria-label="הסרה">×</button></div>
+      <div class="chips">${chips}</div></div>`;
+  }).join('') + `<div class="note">🏷 = מחיר מבצע · * = מוצר מקביל שבחרת לרשת הזו · אפשר ללחוץ על רשת כדי להחליף מוצר</div>`;
+}
+$('#list').addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  const f=k=>items.find(x=>x.id===b.dataset[k]);
+  if(b.dataset.inc){const x=f('inc');x.qty=+(x.qty+(x.w?0.5:1)).toFixed(2);}
+  else if(b.dataset.dec){const x=f('dec');const s=x.w?0.5:1; if(x.qty>s) x.qty=+(x.qty-s).toFixed(2); else items=items.filter(y=>y!==x);}
+  else if(b.dataset.del){items=items.filter(y=>y.id!==b.dataset.del);}
+  else if(b.dataset.alt){openAlt(f('alt'),+b.dataset.si);return;}
+  else return;
+  save(); render();
+});
+
+// ---------- choose equivalent product for one chain ----------
+function openAlt(x,si){
+  const m=$('#modal');
+  m.innerHTML=`<div class="modal"><div class="sheet"><h3>מוצר מקביל ב${esc(STORES[si].name)}</h3>
+    <div class="small">עבור: ${esc(x.name)}</div>
+    <div class="search" style="margin-top:10px"><input id="aq" type="search" value="${esc(x.name.split(' ').slice(0,2).join(' '))}"></div>
+    <div class="results" id="ares"></div>
+    <div class="foot"><button class="btn ghost" id="anone">אין ברשת הזו</button><button class="btn ghost" id="aclose">סגירה</button></div></div></div>`;
+  const run=()=>{$('#ares').innerHTML=resHtml(search($('#aq').value,si),si);};
+  $('#aq').addEventListener('input',run); run();
+  $('#ares').addEventListener('click',e=>{const r=e.target.closest('.res[data-code]'); if(!r) return; x.codes[si]=r.dataset.code; close(true);});
+  $('#anone').onclick=()=>{x.codes[si]=null; close(true);};
+  $('#aclose').onclick=()=>close(false);
+  m.querySelector('.modal').addEventListener('click',e=>{if(e.target.classList.contains('modal')) close(false);});
+  function close(ch){m.innerHTML=''; if(ch){save();render();}}
+}
+
+// ---------- compare view ----------
+function renderCmp(){
+  const v=$('#v-cmp');
+  if(!items.length){ v.innerHTML='<div class="empty">אין עדיין מוצרים ברשימה.</div>'; return; }
+  const per=STORES.map((s,i)=>{ let t=0,reg=0,miss=[]; for(const x of items){const p=priceAt(x.codes[i],i,x.qty); if(p){t+=p.cost;reg+=p.reg;} else miss.push(x.name);} return {s,i,t,reg,miss}; });
+  // fair comparison: only items every chain has
+  const common=items.filter(x=>STORES.every((s,i)=>priceAt(x.codes[i],i,x.qty)));
+  const commonT=STORES.map((s,i)=>common.reduce((a,x)=>a+priceAt(x.codes[i],i,x.qty).cost,0));
+  const full=per.filter(p=>!p.miss.length);
+  const pool = full.length? full : per;
+  const best = pool.reduce((a,b)=> (full.length? a.t<=b.t : commonT[a.i]<=commonT[b.i]) ? a:b);
+  // split shopping: each item at its cheapest chain
+  let split=0, splitMiss=0; const where=STORES.map(()=>0);
+  for(const x of items){ let bi=-1,bc=Infinity; STORES.forEach((s,i)=>{const p=priceAt(x.codes[i],i,x.qty); if(p&&p.cost<bc){bc=p.cost;bi=i;}}); if(bi<0) splitMiss++; else {split+=bc; where[bi]++;} }
+  const cards=per.sort((a,b)=>(a.miss.length-b.miss.length)||(a.t-b.t)).map(p=>`
+    <div class="card store ${p===best?'best':''}"><div class="row"><div class="grow">
+      <div class="sname">${esc(p.s.name)}${p===best?'<span class="badge">הכי משתלם</span>':''}</div>
+      <div class="saddr">${esc(p.s.addr)}</div></div>
+      <div class="total">${fmt(p.t)}</div></div>
+      ${p.reg-p.t>0.01?`<div class="note">כולל מבצעים: חוסכים ${fmt(p.reg-p.t)}</div>`:''}
+      ${p.miss.length?`<div class="warnline">חסרים ${p.miss.length}: ${esc(p.miss.slice(0,4).join(', '))}${p.miss.length>4?'…':''}</div>`:''}
+    </div>`).join('');
+  const commonNote = common.length<items.length ? `<div class="card"><div class="small">השוואה הוגנת על ${common.length} המוצרים שיש בכל הרשתות:</div><div class="chips">${STORES.map((s,i)=>`<span class="chip">${esc(s.name)}: ${fmt(commonT[i])}</span>`).join('')}</div></div>`:'';
+  const splitUsed=where.filter(Boolean).length;
+  const splitNote = splitUsed>1 && !splitMiss && full.length && best.t-split>0.5 ? `<div class="card"><b>פיצול קניות:</b> אם קונים כל מוצר ברשת הזולה לו, הסל יוצא ${fmt(split)} — חיסכון של ${fmt(best.t-split)} לעומת ${esc(best.s.name)}, אבל בשתי עצירות או יותר.</div>`:'';
+  const rows=items.map(x=>{ const ps=STORES.map((s,i)=>priceAt(x.codes[i],i,x.qty)); const mn=Math.min(...ps.filter(Boolean).map(p=>p.cost));
+    return `<tr><td>${esc(x.name)}${x.qty!==1?` <span class="small">×${x.qty}</span>`:''}</td>${ps.map(p=>p?`<td class="num ${Math.abs(p.cost-mn)<0.005?'min':''}">${fmt(p.cost)}${p.cost<p.reg-0.001?'<div class="small">'+esc(p.promo[0])+'</div>':''}</td>`:'<td class="na">—</td>').join('')}</tr>`; }).join('');
+  v.innerHTML=cards+commonNote+splitNote+`
+    <div class="card" style="overflow-x:auto"><table><thead><tr><th>מוצר</th>${STORES.map(s=>`<th style="text-align:center">${esc(s.name)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>
+    <div class="note">מבצעי מועדון לא נכללים בחישוב. מחירי ירקות ופירות במשקל הם לפי ק״ג.</div></div>
+    <div class="foot"><button class="btn" id="done">סיימתי לקנות — לנקות את הרשימה</button></div>
+    <div id="confirm"></div>`;
+  $('#done').onclick=()=>{ $('#confirm').innerHTML='<div class="card">לנקות את כל הרשימה? <div class="foot"><button class="btn" id="yes">כן, לנקות</button><button class="btn ghost" id="no">ביטול</button></div></div>';
+    $('#yes').onclick=()=>{items=[];save();render();show('list');}; $('#no').onclick=()=>{$('#confirm').innerHTML='';}; };
+}
+
+// ---------- shell ----------
+function show(v){ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.v===v)); $('#v-list').hidden=v!=='list'; $('#v-cmp').hidden=v!=='cmp'; render(); }
+document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>show(t.dataset.v));
+function render(){ if(!DATA) return; renderList(); if(!$('#v-cmp').hidden) renderCmp(); }
+loadPrices(); initDb();
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>

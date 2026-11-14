@@ -11,149 +11,240 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="הסל">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f6f4ef;--card:#fff;--ink:#1d2321;--mute:#6b7370;--line:#e4e0d6;--acc:#1f7a5a;--acc2:#e8f3ee;--warn:#b5651d;--warn2:#fbf0e4;--red:#b3261e}
-*{box-sizing:border-box}
-body{margin:0;font-family:Assistant,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:16px}
-header{position:sticky;top:0;z-index:5;background:var(--bg);padding:calc(14px + env(safe-area-inset-top)) 16px 0}
-h1{margin:0;font-size:22px;font-weight:800}
-.sub{color:var(--mute);font-size:13px;margin-top:2px}
-.tabs{display:flex;gap:6px;margin-top:12px;border-bottom:1px solid var(--line)}
-.tab{flex:1;padding:10px 0;border:0;background:none;font:inherit;font-weight:700;color:var(--mute);border-bottom:3px solid transparent;cursor:pointer}
-.tab.on{color:var(--acc);border-color:var(--acc)}
-main{padding:14px 16px 90px;max-width:720px;margin:0 auto}
-.search{position:relative}
-.search input{width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;background:var(--card)}
-.search input:focus{outline:none;border-color:var(--acc)}
-.results{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-top:6px;overflow:hidden}
-.res{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);cursor:pointer}
-.res:last-child{border:0}
-.res:hover{background:var(--acc2)}
-.res .n{font-weight:600}
-.res .m{font-size:12px;color:var(--mute)}
-.res .p{font-size:13px;color:var(--acc);white-space:nowrap;font-weight:700}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px}
+:root{
+  --brand:#1f7a5a; --brand-2:#2fa67a; --brand-ink:#ffffff; --accent:#f0a03c;
+  --bg:#f3f1ea; --bg-grad:radial-gradient(1200px 600px at 100% -10%, #d9efe4 0%, transparent 60%), radial-gradient(900px 500px at -10% 110%, #f6e4cc 0%, transparent 55%);
+  --glass:rgba(255,255,255,.72); --glass-border:rgba(255,255,255,.9); --solid:#ffffff;
+  --ink:#1b2320; --mute:#64706b; --line:rgba(27,35,32,.10);
+  --good:#1f7a5a; --good-bg:rgba(31,122,90,.12); --warn:#a65a12; --warn-bg:rgba(240,160,60,.18); --bad:#b3261e;
+  --chip:rgba(27,35,32,.06); --shadow:0 8px 30px rgba(20,40,30,.08);
+  --r-lg:22px; --r-md:16px; --r-sm:12px;
+}
+[data-theme="dark"]{
+  --brand:#3cc792; --brand-2:#1f7a5a; --brand-ink:#08130e; --accent:#f3b25e;
+  --bg:#0e1412; --bg-grad:radial-gradient(1200px 600px at 100% -10%, #123326 0%, transparent 60%), radial-gradient(900px 500px at -10% 110%, #2a2214 0%, transparent 55%);
+  --glass:rgba(26,34,31,.70); --glass-border:rgba(255,255,255,.07); --solid:#18201d;
+  --ink:#e8efe9; --mute:#93a19a; --line:rgba(255,255,255,.09);
+  --good:#4fd6a0; --good-bg:rgba(60,199,146,.14); --warn:#f3b25e; --warn-bg:rgba(243,178,94,.14); --bad:#ff8a80;
+  --chip:rgba(255,255,255,.07); --shadow:0 8px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:Heebo,system-ui,sans-serif;background:var(--bg);background-image:var(--bg-grad);background-attachment:fixed;color:var(--ink);font-size:16px;min-height:100vh}
+button,input,select{font:inherit;color:inherit}
+.glass{background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+header{position:sticky;top:0;z-index:10;padding:calc(10px + env(safe-area-inset-top)) 16px 0;background:linear-gradient(var(--bg) 70%, transparent)}
+.top{display:flex;align-items:center;gap:10px;max-width:760px;margin:0 auto}
+.logo{width:38px;height:38px;border-radius:11px}
+h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.3px}
+.sub{color:var(--mute);font-size:12.5px}
+.iconbtn{border:0;background:var(--chip);width:40px;height:40px;border-radius:12px;cursor:pointer;font-size:18px;display:grid;place-items:center}
+.tabs{display:flex;gap:4px;max-width:760px;margin:10px auto 0;padding:4px;border-radius:14px;background:var(--chip)}
+.tab{flex:1;border:0;background:none;padding:9px 0;border-radius:11px;font-weight:700;color:var(--mute);cursor:pointer}
+.tab.on{background:var(--solid);color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+main{max-width:760px;margin:0 auto;padding:12px 16px calc(110px + env(safe-area-inset-bottom))}
+.hero{padding:18px;color:var(--brand-ink);background:linear-gradient(135deg,var(--brand),var(--brand-2));border:0;border-radius:var(--r-lg);box-shadow:var(--shadow);cursor:pointer;width:100%;text-align:start;display:block}
+.hero .k{font-size:13px;opacity:.9}
+.hero .s{font-size:21px;font-weight:800;margin-top:2px}
+.hero .t{font-size:34px;font-weight:800;line-height:1.1;margin-top:6px;font-variant-numeric:tabular-nums}
+.hero .n{font-size:13.5px;margin-top:6px;opacity:.95}
+.add{display:flex;gap:8px;margin-top:12px;padding:6px}
+.add input{flex:1;min-width:0;border:0;background:transparent;padding:10px 8px;font-size:16.5px;outline:none}
+.btn{border:0;border-radius:var(--r-sm);padding:11px 16px;font-weight:700;cursor:pointer;background:var(--brand);color:var(--brand-ink)}
+.btn.ghost{background:transparent;color:var(--brand);box-shadow:inset 0 0 0 1.5px var(--brand)}
+.btn.soft{background:var(--chip);color:var(--ink)}
+.btn.full{width:100%}
+.sugg{margin-top:6px;overflow:hidden;padding:0}
+.opt{display:flex;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer;width:100%;background:none;border-inline:0;border-top:0;text-align:start}
+.opt:last-child{border-bottom:0}
+.opt:hover{background:var(--chip)}
+.opt .nm{font-weight:600}
+.opt .mt{font-size:12px;color:var(--mute)}
+.opt .pr{margin-inline-start:auto;font-weight:800;color:var(--good);white-space:nowrap;font-size:14px}
+.bar{display:flex;align-items:center;gap:8px;margin-top:10px;padding:10px 14px;font-size:14px}
+.bar .grow{flex:1}
+.group{margin-top:16px}
+.gh{display:flex;justify-content:space-between;align-items:baseline;padding:0 4px 6px;font-weight:800;font-size:14px;color:var(--mute)}
+.item{padding:12px 12px 10px;margin-top:8px;transition:opacity .35s, transform .35s}
+.item.done{opacity:.55}
+.item.leaving{opacity:0;transform:translateX(-40px)}
 .row{display:flex;align-items:center;gap:10px}
 .grow{flex:1;min-width:0}
-.iname{font-weight:700;line-height:1.25}
-.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.chip{font-size:12px;padding:3px 8px;border-radius:999px;background:#f1efe9;color:var(--ink);border:0;font-family:inherit;cursor:default}
-.chip.miss{background:var(--warn2);color:var(--warn);cursor:pointer;text-decoration:underline}
-.chip.deal{background:var(--acc2);color:var(--acc)}
-.chip.alt{cursor:pointer}
-.qty{display:flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.qty button{width:34px;height:34px;border:0;background:#f1efe9;font-size:18px;cursor:pointer}
-.qty span{min-width:38px;text-align:center;font-weight:700}
-.x{border:0;background:none;color:var(--mute);font-size:20px;cursor:pointer;padding:4px 6px}
-.empty{color:var(--mute);text-align:center;padding:30px 10px}
-.btn{display:inline-block;padding:11px 16px;border-radius:12px;border:0;background:var(--acc);color:#fff;font:inherit;font-weight:700;cursor:pointer}
-.btn.ghost{background:none;color:var(--acc);border:1.5px solid var(--acc)}
-.store{padding:14px}
-.store.best{border:2px solid var(--acc);background:var(--acc2)}
+.check{width:28px;height:28px;border-radius:9px;border:2px solid var(--line);background:transparent;cursor:pointer;flex:none;display:grid;place-items:center;font-size:16px;color:var(--brand-ink)}
+.item.done .check{background:var(--brand);border-color:var(--brand)}
+.iname{font-weight:700;line-height:1.25;position:relative;display:inline}
+.iname::after{content:"";position:absolute;inset-inline:0;top:52%;height:2px;background:var(--mute);transform:scaleX(0);transform-origin:right;transition:transform .3s}
+.item.done .iname::after{transform:scaleX(1)}
+.meta{font-size:12px;color:var(--mute);margin-top:2px}
+.qty{display:flex;align-items:center;background:var(--chip);border-radius:12px;flex:none}
+.qty button{width:34px;height:34px;border:0;background:none;font-size:19px;cursor:pointer}
+.qty span{min-width:44px;text-align:center;font-weight:700;font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{border:0;font-size:12.5px;padding:4px 9px;border-radius:999px;background:var(--chip);white-space:nowrap}
+.chip.best{background:var(--good-bg);color:var(--good);font-weight:700}
+.chip.warn{background:var(--warn-bg);color:var(--warn);font-weight:600}
+.chip.link{cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.mini{border:0;background:none;color:var(--mute);cursor:pointer;font-size:13px;padding:4px 6px;border-radius:8px}
+.mini:hover{background:var(--chip)}
+.star.on{color:var(--accent)}
+.empty{text-align:center;padding:36px 16px;color:var(--mute)}
+.empty .e{font-size:44px}
+.empty b{display:block;color:var(--ink);font-size:18px;margin:6px 0 4px}
+.store{padding:16px;margin-top:10px}
+.store.win{box-shadow:inset 0 0 0 2px var(--brand),var(--shadow)}
 .sname{font-weight:800;font-size:18px}
 .saddr{font-size:12px;color:var(--mute)}
-.total{font-size:26px;font-weight:800;white-space:nowrap}
-.badge{display:inline-block;background:var(--acc);color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:999px;margin-inline-start:6px;vertical-align:middle}
-.note{font-size:13px;color:var(--mute);margin-top:6px}
-.warnline{font-size:13px;color:var(--warn);margin-top:6px}
-table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:start;vertical-align:top}
-th{font-size:12px;color:var(--mute);font-weight:700}
-td.num{white-space:nowrap;text-align:center}
-td.min{color:var(--acc);font-weight:800}
-td.na{color:#bbb;text-align:center}
-.small{font-size:12px;color:var(--mute)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:flex-end;justify-content:center;z-index:20}
-.sheet{background:var(--bg);width:100%;max-width:720px;max-height:85vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
-.sheet h3{margin:0 0 4px}
-.status{font-size:13px;color:var(--mute);margin-top:8px}
-.foot{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.total{font-size:28px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
+.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:2px 8px;border-radius:999px;background:var(--brand);color:var(--brand-ink);margin-inline-start:6px;vertical-align:middle}
+.note{font-size:12.5px;color:var(--mute);margin-top:6px}
+.cmpcard{padding:12px;margin-top:8px}
+.cmpcard h4{margin:0 0 6px;font-size:15px}
+.cell{display:flex;gap:8px;align-items:baseline;padding:7px 8px;border-radius:10px}
+.cell.min{background:var(--good-bg)}
+.cell .st{width:78px;flex:none;font-weight:700;font-size:13px}
+.cell .pn{flex:1;min-width:0;font-size:12.5px;color:var(--mute);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cell .pp{font-weight:800;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cell.min .pp{color:var(--good)}
+.tag{font-size:11px;padding:1px 6px;border-radius:6px;background:var(--chip);margin-inline-start:4px;font-weight:600;color:var(--mute)}
+.tag.ok{color:var(--good);background:var(--good-bg)}
+.tag.g{color:var(--warn);background:var(--warn-bg)}
+.tag.p{color:#7a3fd1;background:rgba(122,63,209,.12)}
+[data-theme="dark"] .tag.p{color:#c7a6ff}
+table.cmp{width:100%;border-collapse:collapse;font-size:13.5px}
+table.cmp th,table.cmp td{padding:9px 8px;border-bottom:1px solid var(--line);text-align:start;vertical-align:top}
+table.cmp th{font-size:12px;color:var(--mute)}
+table.cmp td.min{background:var(--good-bg)}
+table.cmp td.min .pp{color:var(--good)}
+table.cmp tfoot td{font-weight:800}
+.wide{display:none}
+@media (min-width:760px){.wide{display:block}.narrow{display:none}}
+.hist{padding:14px;margin-top:8px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center;z-index:50;animation:fade .2s}
+.sheet{width:100%;max-width:760px;max-height:88vh;overflow:auto;border-radius:22px 22px 0 0;padding:18px 16px calc(18px + env(safe-area-inset-bottom));background:var(--bg);animation:up .25s}
+.sheet h3{margin:0 0 4px;font-size:19px}
+.field{display:block;width:100%;padding:12px;border-radius:var(--r-sm);border:1.5px solid var(--line);background:var(--solid);margin-top:8px;outline:none}
+.field:focus{border-color:var(--brand)}
+.foot{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.sync{font-size:12.5px;color:var(--mute);margin-top:14px;text-align:center}
+.sync a{color:var(--brand)}
+.dock{position:fixed;inset-inline:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));z-index:20;display:flex;justify-content:center;pointer-events:none}
+.dock[hidden]{display:none}
+.dock .btn{pointer-events:auto;box-shadow:var(--shadow);border-radius:16px;padding:14px 22px;max-width:728px;width:100%}
+.sk{height:14px;border-radius:7px;background:linear-gradient(90deg,var(--chip),rgba(127,127,127,.14),var(--chip));background-size:200% 100%;animation:sh 1.2s infinite;margin:8px 0}
+@keyframes sh{to{background-position:-200% 0}}
+@keyframes fade{from{opacity:0}}
+@keyframes up{from{transform:translateY(40px);opacity:0}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+:focus-visible{outline:2.5px solid var(--brand);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <header>
-  <h1>השוואת סל קניות</h1>
-  <div class="sub" id="sub">טוען מחירים…</div>
-  <div class="tabs">
-    <button class="tab on" data-v="list">הרשימה שלי <span id="cnt"></span></button>
-    <button class="tab" data-v="cmp">איפה הכי זול?</button>
+  <div class="top">
+    <img class="logo" src="icons/icon-192.png" alt="">
+    <div class="grow"><h1>הסל</h1><div class="sub" id="sub">טוען מחירים…</div></div>
+    <button class="iconbtn" id="theme" aria-label="החלפת מצב כהה ובהיר">🌓</button>
   </div>
+  <nav class="tabs" role="tablist">
+    <button class="tab on" data-v="list" role="tab" aria-selected="true">רשימה <span id="cnt"></span></button>
+    <button class="tab" data-v="cmp" role="tab" aria-selected="false">השוואה</button>
+    <button class="tab" data-v="hist" role="tab" aria-selected="false">היסטוריה</button>
+  </nav>
 </header>
 <main>
   <section id="v-list">
-    <div class="search">
-      <input id="q" type="search" placeholder="מה נגמר? למשל: קוטג׳, במבה, חלב 3%" autocomplete="off">
-      <div class="results" id="res" hidden></div>
-    </div>
-    <div id="list"></div>
-    <div class="status" id="sync"></div>
+    <div id="hero"></div>
+    <form class="add glass" id="addf" autocomplete="off">
+      <label class="sr" for="q">הוספת פריט</label>
+      <input id="q" placeholder="מה חסר? למשל: 2 קרטוני ביצים" enterkeyhint="done">
+      <button class="btn" aria-label="הוספת הפריט לרשימה">הוספה</button>
+    </form>
+    <div class="sugg glass" id="sugg" hidden></div>
+    <div id="regbar"></div>
+    <div id="list"><div class="glass item"><div class="sk" style="width:60%"></div><div class="sk" style="width:85%"></div></div><div class="glass item"><div class="sk" style="width:45%"></div><div class="sk" style="width:75%"></div></div></div>
+    <div class="sync" id="sync"></div>
   </section>
   <section id="v-cmp" hidden></section>
+  <section id="v-hist" hidden></section>
 </main>
+<div class="dock" id="dock"></div>
 <div id="modal"></div>
 
+<script src="logic.js"></script>
 <script>
-let DATA=null, BY=new Map(), STORES=[], items=[], db=null, listDoc=null, saving=false, pending=false;
+'use strict';
 const $=s=>document.querySelector(s);
-const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const fmt=n=>'₪'+(Math.round(n*100)/100).toFixed(2);
-const norm=s=>String(s).replace(/[׳'"`״]/g,'').replace(/\s+/g,' ').trim().toLowerCase();
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const M=L.money;
+let DATA=null, STORES=[], state={items:[],regulars:[],history:[]}, view='list';
+let FS=null, db=null, listDoc=null, unsub=null, saving=false, pending=false;
+
+// ---------- theme ----------
+function lsGet(k,d){ try{const v=localStorage.getItem(k); return v==null?d:v;}catch(e){return d;} }
+function lsSet(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
+function applyTheme(){ const t=lsGet('theme','auto'); const dark=t==='dark'||(t==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches); document.documentElement.dataset.theme=dark?'dark':'light'; document.querySelector('meta[name=theme-color]').content=dark?'#0e1412':'#1f7a5a'; }
+$('#theme').onclick=()=>{ const t=lsGet('theme','auto'); lsSet('theme', t==='auto'?(document.documentElement.dataset.theme==='dark'?'light':'dark'):(t==='dark'?'light':'dark')); applyTheme(); };
+matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',applyTheme); applyTheme();
+
+// ---------- count-up numbers ----------
+function countUp(el){ const to=+el.dataset.to; const from=+(el.dataset.from||0); if(Math.abs(to-from)<0.01||matchMedia('(prefers-reduced-motion: reduce)').matches){el.textContent=M(to);return;}
+  const t0=performance.now(), d=600; (function f(t){ const k=Math.min(1,(t-t0)/d), e=1-Math.pow(1-k,3); el.textContent=M(from+(to-from)*e); if(k<1) requestAnimationFrame(f); })(t0); }
+const lastShown={};
+function num(key,v){ const from=lastShown[key]??0; lastShown[key]=v; return `<span class="cu" data-from="${from}" data-to="${v}">${M(from)}</span>`; }
+function runCounters(){ document.querySelectorAll('.cu').forEach(countUp); }
 
 // ---------- data ----------
 async function loadPrices(){
-  try{
-    const r=await fetch('prices.json',{cache:'no-store'});
-    DATA=await r.json();
-  }catch(e){ $('#sub').textContent='לא הצלחתי לטעון את המחירים'; return; }
-  STORES=DATA.stores;
-  for(const it of DATA.items){ it.push(norm(it[1]+' '+it[2])); BY.set(it[0],it); }
+  try{ DATA=await (await fetch('prices.json',{cache:'no-cache'})).json(); }
+  catch(e){ $('#sub').textContent='לא הצלחתי לטעון מחירים'; $('#list').innerHTML=''; return; }
+  L.prepare(DATA); STORES=DATA.stores;
   const d=new Date(DATA.updated);
-  $('#sub').textContent='מחירים מעודכנים ל־'+(isNaN(d)?DATA.updated:d.toLocaleDateString('he-IL',{day:'numeric',month:'numeric'})+' '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}))
-    +' · '+STORES.map(s=>s.name).join(' · ')+(DATA.missing?.length?' (חסרים נתונים: '+DATA.missing.length+')':'');
+  $('#sub').textContent='מחירים מ־'+(isNaN(d)?DATA.updated:d.toLocaleDateString('he-IL',{day:'numeric',month:'numeric'})+' '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}))+' · '+STORES.map(s=>s.name).join(' · ');
   render();
 }
+function migrate(x){ // lines saved by the first version
+  if(!x.unit) x.unit = x.w ? 'ק"ג' : "יח'";
+  if(!x.guess) x.guess=(x.codes||[]).map(()=>false);
+  if(x.ref===undefined) x.ref=(x.codes||[]).find(Boolean)||null;
+  if(!x.cat) x.cat=L.category(x.name);
+  x.bought=!!x.bought; delete x.w; return x;
+}
 
-// ---------- persistence: Firebase (shared by family code), fallback localStorage ----------
+// ---------- persistence: Firebase (shared by a family code) + local copy ----------
 const FB_CONFIG={apiKey:"AIzaSyAjdGkHwj0NYvHTX3O4gWJho6e9XEMJGxw",authDomain:"hasal-f1192.firebaseapp.com",projectId:"hasal-f1192",storageBucket:"hasal-f1192.firebasestorage.app",messagingSenderId:"239188418535",appId:"1:239188418535:web:18a5f9b8ba74a3f876e742"};
-let FS=null, unsub=null;
-function lsGet(k,d){ try{const v=localStorage.getItem(k); return v==null?d:v;}catch(e){return d;} }
-function lsSet(k,v){ try{localStorage.setItem(k,v);}catch(e){} }
-function saveLocal(){ lsSet('grocery-list',JSON.stringify(items)); }
-function loadLocal(){ try{return JSON.parse(lsGet('grocery-list','[]'));}catch(e){return [];} }
 function newCode(){ const a=new Uint8Array(30); crypto.getRandomValues(a); return Array.from(a,b=>'abcdefghjkmnpqrstuvwxyz23456789'[b%31]).join('').replace(/(.{6})(?=.)/g,'$1-'); }
+function codeId(c){ return String(c).replace(/[^a-z0-9]/gi,'').toLowerCase(); }
 function familyCode(){ let c=lsGet('family-code',''); if(codeId(c).length<24){ c=newCode(); lsSet('family-code',c);} return c; }
-function codeId(c){ return c.replace(/[^a-z0-9]/gi,'').toLowerCase(); }
+function saveLocal(){ lsSet('hasal-state',JSON.stringify(state)); }
+function loadLocal(){ try{ const s=JSON.parse(lsGet('hasal-state','null')); if(s) return s; const old=JSON.parse(lsGet('grocery-list','[]')); return {items:old,regulars:[],history:[]}; }catch(e){ return {items:[],regulars:[],history:[]}; } }
+function clean(o){ return JSON.parse(JSON.stringify(o)); }
 async function save(){
-  saveLocal();
-  if(!listDoc) return;
-  if(saving){pending=true;return;}
-  saving=true;
-  try{ await FS.setDoc(listDoc,{items:JSON.parse(JSON.stringify(items)), updatedAt:Date.now()}); setSync(true); }
-  catch(e){ setSync(false); }
+  saveLocal(); if(!listDoc) return;
+  if(saving){pending=true;return;} saving=true;
+  try{ await FS.setDoc(listDoc,{items:clean(state.items),regulars:clean(state.regulars),history:clean(state.history.slice(0,40)),updatedAt:Date.now()}); setSync(true); }
+  catch(e){ console.warn(e); setSync(false); }
   saving=false; if(pending){pending=false;save();}
 }
-function setSync(ok){ $('#sync').innerHTML=(ok?'☁️ הרשימה משותפת':'📱 נשמר במכשיר בלבד (אין חיבור)')+' · <a href="#" id="share">שיתוף עם בן/בת הזוג</a>'; }
+function setSync(ok){ $('#sync').innerHTML=(ok?'☁️ הרשימה משותפת':'📱 נשמר במכשיר (אין חיבור)')+' · <a href="#" id="share">שיתוף עם בן/בת הזוג</a>'; }
+function adopt(v){ state={items:(v.items||[]).map(migrate),regulars:v.regulars||[],history:v.history||[]}; }
 async function connect(){
-  if(unsub){unsub();unsub=null;}
-  if(!FS) return;
-  listDoc=FS.doc(db,'lists',codeId(familyCode()));
-  let first=true;
+  if(unsub){unsub();unsub=null;} if(!FS) return;
+  listDoc=FS.doc(db,'lists',codeId(familyCode())); let first=true;
   unsub=FS.onSnapshot(listDoc,snap=>{
     const v=snap.exists()?snap.data():null;
-    if(first){ first=false;
-      if(v&&Array.isArray(v.items)&&(v.items.length||!items.length)) items=v.items;
-      else if(items.length) save();
-    } else if(v&&Array.isArray(v.items)&&!saving&&!snap.metadata.hasPendingWrites){ items=v.items; }
+    if(first){ first=false; if(v&&(v.items?.length||v.regulars?.length||v.history?.length||!state.items.length)) adopt(v); else if(state.items.length) save(); }
+    else if(v&&!saving&&!snap.metadata.hasPendingWrites) adopt(v);
     saveLocal(); render(); setSync(true);
-  }, ()=>setSync(false));
+  },()=>setSync(false));
 }
 async function initDb(){
-  // join via link: #f=CODE
   const m=location.hash.match(/f=([a-z0-9-]{24,})/i);
   if(m){ lsSet('family-code',m[1].toLowerCase()); history.replaceState(null,'',location.pathname); }
-  items=loadLocal(); render(); setSync(false);
+  adopt(loadLocal()); render(); setSync(false);
   try{
     const V='10.12.2';
     const app=await import(`https://www.gstatic.com/firebasejs/${V}/firebase-app.js`);
@@ -162,158 +253,206 @@ async function initDb(){
     await connect();
   }catch(e){ console.warn(e); setSync(false); }
 }
-function openShare(){
-  const c=familyCode(), link=location.origin+location.pathname+'#f='+c;
-  $('#modal').innerHTML=`<div class="modal"><div class="sheet"><h3>רשימה משותפת</h3>
-    <div class="small">כל מי שמחובר עם אותו קוד רואה ועורך את אותה רשימה.</div>
-    <div class="card"><div class="small">הקוד המשפחתי שלכם</div><div style="font-weight:800;font-size:18px;direction:ltr;text-align:left;word-break:break-all">${esc(c)}</div></div>
-    <div class="foot"><button class="btn" id="cpl">העתקת קישור הצטרפות</button><button class="btn ghost" id="cpc">העתקת הקוד</button></div>
-    <div class="note" id="cpmsg"></div>
-    <h3 style="margin-top:18px">הצטרפות לרשימה קיימת</h3>
-    <div class="small">קיבלת קוד? הדביקי אותו כאן. הרשימה במכשיר הזה תוחלף ברשימה המשותפת.</div>
-    <div class="search" style="margin-top:8px"><input id="jc" placeholder="הדבקת קוד" style="direction:ltr"></div>
-    <div class="foot"><button class="btn" id="jbtn">הצטרפות</button><button class="btn ghost" id="sclose">סגירה</button></div></div></div>`;
-  const copy=async t=>{ try{await navigator.clipboard.writeText(t); $('#cpmsg').textContent='הועתק. שלחי בוואטסאפ.';}catch(e){ $('#cpmsg').textContent=t; } };
-  $('#cpl').onclick=()=>copy(link); $('#cpc').onclick=()=>copy(c);
-  $('#sclose').onclick=()=>{$('#modal').innerHTML='';};
-  $('#jbtn').onclick=async()=>{ const v=$('#jc').value.trim().toLowerCase().replace(/^.*#f=/,''); if(codeId(v).length<24){ $('#cpmsg').textContent='הקוד לא תקין'; return; }
-    lsSet('family-code',v); items=[]; saveLocal(); $('#modal').innerHTML=''; await connect(); render(); };
-}
-document.addEventListener('click',e=>{ if(e.target.id==='share'){ e.preventDefault(); openShare(); } });
+function commit(){ save(); render(); }
 
-// ---------- pricing ----------
-function priceAt(code,si,qty){
-  const it=code&&BY.get(code); if(!it) return null;
-  const reg=it[3][si]; if(reg==null) return null;
-  const pr=it[4][si];
-  if(pr && !pr[4] && qty>=pr[1]) return {cost:qty*pr[2], reg:qty*reg, promo:pr};
-  return {cost:qty*reg, reg:qty*reg, promo:pr||null};
+// ---------- list actions ----------
+function lineFromText(text){
+  const p=L.parseLine(text); if(!p.name) return null;
+  const g=L.guess(DATA,p.name,p.unit);
+  return {id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), name:p.name, qty:p.qty, unit:p.unit, codes:g.codes, guess:g.guess, ref:g.ref, cat:L.category(p.name), bought:false};
 }
-function minPrice(it){ const ps=it[3].filter(p=>p!=null); return ps.length?Math.min(...ps):null; }
+function lineFromProduct(it, text){
+  const p=text?L.parseLine(text):{qty:1,unit:it[5]?'ק"ג':"יח'"};
+  return {id:Date.now().toString(36)+Math.random().toString(36).slice(2,6), name:it[1], qty:p.qty, unit:it[5]&&p.unit==="יח'"?'ק"ג':p.unit,
+    codes:it[3].map(pr=>pr!=null?it[0]:null), guess:it[3].map(()=>false), ref:it[0], cat:L.category(it[1]), bought:false};
+}
+function addLine(l){ if(!l) return; const ex=state.items.find(x=>!x.bought&&(x.ref&&x.ref===l.ref&&!l.guess.some(Boolean)||L.norm(x.name)===L.norm(l.name))); if(ex){ ex.qty=+(ex.qty+l.qty).toFixed(2); } else state.items.unshift(l); commit(); }
+const STEP=u=>u==='ק"ג'?0.5:u==='גרם'?100:u==='ליטר'?0.5:u==='מ"ל'?100:1;
+function findLine(id){ return state.items.find(x=>x.id===id); }
+function isRegular(l){ return state.regulars.some(r=>L.norm(r.name)===L.norm(l.name)); }
 
-// ---------- search ----------
-function search(q, onlyStore){
-  const words=norm(q).split(' ').filter(Boolean); if(!words.length) return [];
-  const out=[];
-  for(const it of DATA.items){
-    if(onlyStore!=null && it[3][onlyStore]==null) continue;
-    const h=it[6]; if(!words.every(w=>h.includes(w))) continue;
-    const have=it[3].filter(p=>p!=null).length;
-    const starts=h.startsWith(words[0])?1:0;
-    out.push([it,have*10+starts*5-it[1].length/40]);
-    if(out.length>4000) break;
-  }
-  return out.sort((a,b)=>b[1]-a[1]).slice(0,30).map(x=>x[0]);
+// ---------- render: list ----------
+function heroHtml(c){
+  if(!state.items.length||!c.best) return '';
+  const b=c.best, miss=b.missing.length;
+  return `<button class="hero" id="tohero" aria-label="מעבר להשוואה המלאה">
+    <div class="k">הכי משתלם עכשיו</div>
+    <div class="s">${esc(b.store.name)} · ${esc(b.store.addr.split(',')[0])}</div>
+    <div class="t">${num('hero',b.total)}</div>
+    <div class="n">${c.saving>0.05?`חוסך ${M(c.saving)} מול היקר`:'כמעט אותו מחיר בכל הסניפים'}${miss?` · חסרים בו ${miss}`:''}${b.guesses?` · ${b.guesses} ניחושים`:''}</div></button>`;
 }
-function resHtml(list, si){
-  if(!list.length) return '<div class="res"><span class="m">לא נמצאו מוצרים</span></div>';
-  return list.map(it=>{
-    const p = si==null? minPrice(it) : it[3][si];
-    const where = si==null? it[3].map((p,i)=>p!=null?STORES[i].name:null).filter(Boolean).join(' · ') : (it[2]||'');
-    return `<div class="res" data-code="${esc(it[0])}"><div class="grow"><div class="n">${esc(it[1])}</div><div class="m">${esc(si==null?(it[2]?it[2]+' · ':'')+where:where)}</div></div><div class="p">${p!=null?(si==null?'מ־':'')+fmt(p):''}</div></div>`;
-  }).join('');
+function lineHtml(x,c){
+  const row=c.rows.find(r=>r.line===x);
+  const chips=STORES.map((s,i)=>{ const p=row&&row.cells[i];
+    if(!p) return `<span class="chip">${esc(s.name)}: אין</span>`;
+    return `<span class="chip ${row.cheapest[i]&&row.cells.filter(Boolean).length>1?'best':''}">${esc(s.name)}: ${M(p.compareCost)}${p.promo&&p.promo.applied?' 🏷':''}</span>`; }).join('');
+  const anyGuess=x.guess&&x.guess.some(Boolean);
+  const u=x.unit==="יח'"?'':' '+x.unit;
+  return `<div class="glass item ${x.bought?'done':''}" data-id="${x.id}">
+    <div class="row">
+      <button class="check" data-act="buy" aria-label="${x.bought?'ביטול סימון נקנה':'סימון כנקנה'}: ${esc(x.name)}">${x.bought?'✓':''}</button>
+      <div class="grow"><span class="iname">${esc(x.name)}</span></div>
+      <div class="qty" role="group" aria-label="כמות"><button data-act="dec" aria-label="הפחתה">−</button><span>${+(+x.qty).toFixed(2)}${u}</span><button data-act="inc" aria-label="הוספה">+</button></div>
+    </div>
+    <div class="chips">${chips}${anyGuess?'<button class="chip warn link" data-act="pick">ניחוש, כדאי לבדוק</button>':''}</div>
+    <div class="row" style="margin-top:4px;gap:2px">
+      <button class="mini" data-act="pick" aria-label="בחירת המוצר המדויק">🔎 בחר מוצר</button>
+      <button class="mini star ${isRegular(x)?'on':''}" data-act="reg" aria-label="${isRegular(x)?'הסרה מהרגילים שלי':'הוספה לרגילים שלי'}">${isRegular(x)?'★':'☆'} רגיל</button>
+      <button class="mini" data-act="edit" aria-label="עריכה">✏️ עריכה</button>
+      <span class="grow"></span>
+      <button class="mini" data-act="del" aria-label="מחיקה">🗑</button>
+    </div></div>`;
 }
-$('#q').addEventListener('input',e=>{
-  const q=e.target.value; const box=$('#res');
-  if(!DATA||norm(q).length<2){box.hidden=true;return;}
-  box.innerHTML=resHtml(search(q)); box.hidden=false;
-});
-$('#res').addEventListener('click',e=>{
-  const r=e.target.closest('.res[data-code]'); if(!r) return;
-  addItem(BY.get(r.dataset.code)); $('#q').value=''; $('#res').hidden=true;
-});
-function addItem(it){
-  const ex=items.find(x=>x.codes.includes(it[0]));
-  if(ex){ ex.qty+= it[5]?0.5:1; }
-  else items.unshift({id:Date.now().toString(36), name:it[1], qty: it[5]?1:1, w:it[5], codes:it[3].map(p=>p!=null?it[0]:null)});
-  save(); render();
-}
-
-// ---------- list view ----------
-function renderList(){
-  $('#cnt').textContent=items.length?`(${items.length})`:'';
-  if(!items.length){ $('#list').innerHTML='<div class="empty">הרשימה ריקה. חפשי מוצר שנגמר והוסיפי אותו.</div>'; return; }
-  $('#list').innerHTML=items.map(x=>{
-    const chips=STORES.map((s,i)=>{
-      const p=priceAt(x.codes[i],i,x.qty);
-      if(!p) return `<button class="chip miss" data-alt="${x.id}" data-si="${i}">${esc(s.name)}: לא נמצא · בחרי מקביל</button>`;
-      const other=x.codes[i]!==x.codes.find(Boolean);
-      return `<button class="chip ${p.cost<p.reg-0.001?'deal':''} alt" data-alt="${x.id}" data-si="${i}" title="החלפת מוצר">${esc(s.name)}: ${fmt(p.cost)}${p.cost<p.reg-0.001?' 🏷':''}${other?' *':''}</button>`;
-    }).join('');
-    return `<div class="card"><div class="row"><div class="grow"><div class="iname">${esc(x.name)}</div></div>
-      <div class="qty"><button data-dec="${x.id}">−</button><span>${x.w?x.qty+' ק״ג':x.qty}</span><button data-inc="${x.id}">+</button></div>
-      <button class="x" data-del="${x.id}" aria-label="הסרה">×</button></div>
-      <div class="chips">${chips}</div></div>`;
-  }).join('') + `<div class="note">🏷 = מחיר מבצע · * = מוצר מקביל שבחרת לרשת הזו · אפשר ללחוץ על רשת כדי להחליף מוצר</div>`;
+function renderList(c){
+  $('#cnt').textContent=state.items.length?`(${state.items.filter(x=>!x.bought).length})`:'';
+  $('#hero').innerHTML=heroHtml(c);
+  const missingRegs=state.regulars.filter(r=>!state.items.some(x=>L.norm(x.name)===L.norm(r.name)));
+  $('#regbar').innerHTML=state.regulars.length?`<div class="bar glass"><span>⭐</span><span class="grow">הרגילים שלי (${state.regulars.length})${missingRegs.length?` · ${missingRegs.length} לא ברשימה`:' · כולם ברשימה'}</span>${missingRegs.length?`<button class="btn" id="addregs" aria-label="הוספת כל הרגילים לרשימה">הוספת כולם</button>`:''}</div>`:'';
+  if(!state.items.length){ $('#list').innerHTML=`<div class="empty"><div class="e">🧺</div><b>הרשימה ריקה. מה חסר בבית?</b>כתבי למשל "חלב 3%", "2 קרטוני ביצים" או "1.5 ק"ג עגבניות"</div>`; $('#dock').innerHTML=''; return; }
+  const groups={}; for(const x of state.items){ (groups[x.cat||'אחר']??=[]).push(x); }
+  const order=Object.keys(groups).sort((a,b)=>(groups[b].filter(x=>!x.bought).length-groups[a].filter(x=>!x.bought).length)||(L.CAT_ORDER.indexOf(a)-L.CAT_ORDER.indexOf(b)));
+  $('#list').innerHTML=order.map(g=>{ const its=groups[g].slice().sort((a,b)=>a.bought-b.bought);
+    return `<section class="group" aria-label="${esc(g)}"><div class="gh"><span>${esc(g)}</span><span>${its.filter(x=>!x.bought).length}/${its.length}</span></div>${its.map(x=>lineHtml(x,c)).join('')}</section>`; }).join('');
+  const nb=state.items.filter(x=>x.bought).length;
+  $('#dock').innerHTML=nb?`<button class="btn" id="finish">סיימתי קנייה (${nb} נקנו)</button>`:'';
 }
 $('#list').addEventListener('click',e=>{
-  const b=e.target.closest('button'); if(!b) return;
-  const f=k=>items.find(x=>x.id===b.dataset[k]);
-  if(b.dataset.inc){const x=f('inc');x.qty=+(x.qty+(x.w?0.5:1)).toFixed(2);}
-  else if(b.dataset.dec){const x=f('dec');const s=x.w?0.5:1; if(x.qty>s) x.qty=+(x.qty-s).toFixed(2); else items=items.filter(y=>y!==x);}
-  else if(b.dataset.del){items=items.filter(y=>y.id!==b.dataset.del);}
-  else if(b.dataset.alt){openAlt(f('alt'),+b.dataset.si);return;}
-  else return;
-  save(); render();
+  const b=e.target.closest('[data-act]'); if(!b) return; const card=b.closest('.item'); const x=findLine(card.dataset.id); if(!x) return;
+  const a=b.dataset.act;
+  if(a==='buy'){ x.bought=!x.bought; card.classList.toggle('done',x.bought); setTimeout(commit,320); return; }
+  if(a==='inc'){ x.qty=+(+x.qty+STEP(x.unit)).toFixed(2); }
+  else if(a==='dec'){ const s=STEP(x.unit); if(x.qty>s) x.qty=+(x.qty-s).toFixed(2); else { card.classList.add('leaving'); setTimeout(()=>{state.items=state.items.filter(y=>y!==x);commit();},300); return; } }
+  else if(a==='del'){ card.classList.add('leaving'); setTimeout(()=>{state.items=state.items.filter(y=>y!==x);commit();},300); return; }
+  else if(a==='reg'){ if(isRegular(x)) state.regulars=state.regulars.filter(r=>L.norm(r.name)!==L.norm(x.name)); else state.regulars.push({name:x.name,qty:x.qty,unit:x.unit,codes:x.codes,guess:x.guess,ref:x.ref,cat:x.cat}); }
+  else if(a==='pick'){ openPicker(x); return; }
+  else if(a==='edit'){ openEdit(x); return; }
+  commit();
+});
+document.addEventListener('click',e=>{
+  if(e.target.closest('#tohero')) show('cmp');
+  if(e.target.id==='addregs'){ for(const r of state.regulars) if(!state.items.some(x=>L.norm(x.name)===L.norm(r.name))) state.items.push(Object.assign(clean(r),{id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),bought:false})); commit(); }
+  if(e.target.id==='finish') openFinish();
+  if(e.target.id==='share'){ e.preventDefault(); openShare(); }
 });
 
-// ---------- choose equivalent product for one chain ----------
-function openAlt(x,si){
-  const m=$('#modal');
-  m.innerHTML=`<div class="modal"><div class="sheet"><h3>מוצר מקביל ב${esc(STORES[si].name)}</h3>
-    <div class="small">עבור: ${esc(x.name)}</div>
-    <div class="search" style="margin-top:10px"><input id="aq" type="search" value="${esc(x.name.split(' ').slice(0,2).join(' '))}"></div>
-    <div class="results" id="ares"></div>
-    <div class="foot"><button class="btn ghost" id="anone">אין ברשת הזו</button><button class="btn ghost" id="aclose">סגירה</button></div></div></div>`;
-  const run=()=>{$('#ares').innerHTML=resHtml(search($('#aq').value,si),si);};
-  $('#aq').addEventListener('input',run); run();
-  $('#ares').addEventListener('click',e=>{const r=e.target.closest('.res[data-code]'); if(!r) return; x.codes[si]=r.dataset.code; close(true);});
-  $('#anone').onclick=()=>{x.codes[si]=null; close(true);};
-  $('#aclose').onclick=()=>close(false);
-  m.querySelector('.modal').addEventListener('click',e=>{if(e.target.classList.contains('modal')) close(false);});
-  function close(ch){m.innerHTML=''; if(ch){save();render();}}
+// ---------- quick add + suggestions ----------
+let suggTimer=null;
+$('#q').addEventListener('input',()=>{ clearTimeout(suggTimer); suggTimer=setTimeout(suggest,120); });
+function suggest(){
+  const t=$('#q').value, box=$('#sugg'); if(!DATA){box.hidden=true;return;}
+  const p=L.parseLine(t); if(L.norm(p.name).length<2){box.hidden=true;return;}
+  const list=L.search(DATA,p.name,{limit:6,weighted:(p.unit==='ק"ג'||p.unit==='גרם')?true:null});
+  box.innerHTML=`<button class="opt" data-free="1"><div class="grow"><div class="nm">➕ להוסיף "${esc(p.name)}"${p.qty!==1||p.unit!=="יח'"?` · ${p.qty} ${esc(p.unit)}`:''}</div><div class="mt">המוצר ייבחר אוטומטית בכל סניף (ניחוש)</div></div></button>`+
+    list.map(it=>{ const mn=Math.min(...it[3].filter(v=>v!=null)); const where=it[3].map((v,i)=>v!=null?STORES[i].name:null).filter(Boolean).join(' · ');
+      return `<button class="opt" data-code="${esc(it[0])}"><div class="grow"><div class="nm">${esc(it[1])}</div><div class="mt">${esc([L.sizeLabel(it),it[2],where].filter(Boolean).join(' · '))}</div></div><div class="pr">מ־${M(mn)}${it[5]?'/ק"ג':''}</div></button>`; }).join('');
+  box.hidden=false;
+}
+$('#sugg').addEventListener('click',e=>{ const o=e.target.closest('.opt'); if(!o) return; const t=$('#q').value;
+  addLine(o.dataset.code?lineFromProduct(DATA.by.get(o.dataset.code),t):lineFromText(t)); $('#q').value=''; $('#sugg').hidden=true; $('#q').focus(); });
+$('#addf').addEventListener('submit',e=>{ e.preventDefault(); if(!DATA) return; const t=$('#q').value.trim(); if(!t) return; addLine(lineFromText(t)); $('#q').value=''; $('#sugg').hidden=true; });
+
+// ---------- sheets ----------
+function sheet(html){ $('#modal').innerHTML=`<div class="modal" role="dialog" aria-modal="true"><div class="sheet">${html}</div></div>`; const m=$('#modal .modal'); m.addEventListener('click',e=>{ if(e.target===m) closeSheet(); }); }
+function closeSheet(){ $('#modal').innerHTML=''; }
+function openPicker(x){
+  const storeRows=()=>STORES.map((s,i)=>{ const it=x.codes[i]&&DATA.by.get(x.codes[i]); const p=L.priceAt(DATA,x,i);
+    return `<div class="cell"><span class="st">${esc(s.name)}</span><span class="pn">${it?esc(it[1]):'אין בסניף'}${p?(p.status==='exact'?'<span class="tag ok">✓ זהה</span>':x.guess[i]?'<span class="tag g">ניחוש</span>':'<span class="tag">מוצר דומה</span>'):''}</span><span class="pp">${p?M(p.compareCost):''}</span><button class="mini" data-store="${i}" aria-label="החלפת המוצר ב${esc(s.name)}">החלפה</button></div>`; }).join('');
+  sheet(`<h3>בחירת המוצר המדויק</h3><div class="note">עבור "${esc(x.name)}". בחירה ברשימה מחברת את אותו ברקוד בכל הסניפים שבהם הוא נמכר.</div>
+    <div id="pstores" style="margin-top:8px">${storeRows()}</div>
+    <input class="field" id="pq" value="${esc(x.name)}" aria-label="חיפוש מוצר"><div id="pres" class="glass sugg" style="margin-top:8px"></div>
+    <div class="foot"><button class="btn soft" id="pclose">סגירה</button></div>`);
+  let only=null;
+  const run=()=>{ const list=L.search(DATA,$('#pq').value,{limit:25,store:only});
+    $('#pres').innerHTML=(only!=null?`<div class="opt" style="cursor:default"><b>מחפשים רק ב${esc(STORES[only].name)}</b><button class="mini" id="pall" style="margin-inline-start:auto">בכל הסניפים</button></div>`:'')+
+      (list.map(it=>`<button class="opt" data-code="${esc(it[0])}"><div class="grow"><div class="nm">${esc(it[1])}</div><div class="mt">${esc([L.sizeLabel(it),it[2]].filter(Boolean).join(' · '))}</div><div class="mt">${it[3].map((v,i)=>`${esc(STORES[i].name)}: ${v!=null?M(v):'אין'}`).join(' · ')}</div></div></button>`).join('')||'<div class="opt">לא נמצאו מוצרים</div>'); };
+  $('#pq').addEventListener('input',run); run();
+  $('#pres').addEventListener('click',e=>{ if(e.target.id==='pall'){only=null;run();return;} const o=e.target.closest('.opt[data-code]'); if(!o) return; const it=DATA.by.get(o.dataset.code);
+    if(only==null){ x.ref=it[0]; x.name=it[1]; x.cat=L.category(it[1]); it[3].forEach((v,i)=>{ if(v!=null){x.codes[i]=it[0]; x.guess[i]=false;} }); if(it[5]&&x.unit==="יח'") x.unit='ק"ג'; }
+    else { x.codes[only]=it[0]; x.guess[only]=false; if(!x.ref) x.ref=it[0]; only=null; }
+    save(); $('#pstores').innerHTML=storeRows(); run(); render(); });
+  $('#pstores').addEventListener('click',e=>{ const b=e.target.closest('[data-store]'); if(!b) return; only=+b.dataset.store; run(); $('#pq').focus(); });
+  $('#pclose').onclick=closeSheet;
+}
+function openEdit(x){
+  sheet(`<h3>עריכת פריט</h3>
+    <label class="note" for="en">שם</label><input class="field" id="en" value="${esc(x.name)}">
+    <div class="row"><div class="grow"><label class="note" for="eq">כמות</label><input class="field" id="eq" type="number" inputmode="decimal" step="any" min="0" value="${esc(x.qty)}"></div>
+    <div class="grow"><label class="note" for="eu">יחידה</label><select class="field" id="eu">${L.UNITS.map(u=>`<option ${u===x.unit?'selected':''}>${esc(u)}</option>`).join('')}</select></div></div>
+    <label class="note" for="ec">קטגוריה</label><select class="field" id="ec">${L.CAT_ORDER.map(c=>`<option ${c===x.cat?'selected':''}>${esc(c)}</option>`).join('')}</select>
+    <div class="foot"><button class="btn" id="esave">שמירה</button><button class="btn ghost" id="eguess">ניחוש מחדש לפי השם</button><button class="btn soft" id="eclose">ביטול</button></div>`);
+  $('#esave').onclick=()=>{ x.name=$('#en').value.trim()||x.name; x.qty=Math.max(0.01,+$('#eq').value||1); x.unit=$('#eu').value; x.cat=$('#ec').value; closeSheet(); commit(); };
+  $('#eguess').onclick=()=>{ x.name=$('#en').value.trim()||x.name; const g=L.guess(DATA,x.name,$('#eu').value); Object.assign(x,{codes:g.codes,guess:g.guess,ref:g.ref,unit:$('#eu').value,qty:Math.max(0.01,+$('#eq').value||1)}); closeSheet(); commit(); };
+  $('#eclose').onclick=closeSheet;
+}
+function openFinish(){
+  const bought=state.items.filter(x=>x.bought); const c=L.compare(DATA,bought);
+  const def=(L.compare(DATA,state.items).best||c.ranked[0]).i;
+  sheet(`<h3>סיימתי קנייה</h3><div class="note">${bought.length} פריטים שנקנו יעברו להיסטוריה. הפריטים שלא סומנו יישארו ברשימה.</div>
+    <label class="note" for="fs">איפה קנית?</label><select class="field" id="fs">${STORES.map((s,i)=>`<option value="${i}" ${i===def?'selected':''}>${esc(s.name)} · ${esc(s.addr)}</option>`).join('')}</select>
+    <label class="note" for="ft">סכום ששולם (אפשר לתקן לפי הקבלה)</label><input class="field" id="ft" type="number" inputmode="decimal" step="0.01">
+    <div class="foot"><button class="btn" id="fok">שמירה בהיסטוריה</button><button class="btn soft" id="fclose">ביטול</button></div>`);
+  const est=()=>{ $('#ft').value=c.stores[+$('#fs').value].total.toFixed(2); }; est(); $('#fs').onchange=est;
+  $('#fok').onclick=()=>{ const si=+$('#fs').value;
+    state.history.unshift({date:new Date().toISOString(),store:STORES[si].name,addr:STORES[si].addr,total:+(+$('#ft').value||0).toFixed(2),items:bought.map(x=>({name:x.name,qty:x.qty,unit:x.unit,codes:x.codes,guess:x.guess,ref:x.ref,cat:x.cat}))});
+    state.history=state.history.slice(0,40); state.items=state.items.filter(x=>!x.bought); closeSheet(); commit(); show('hist'); };
+  $('#fclose').onclick=closeSheet;
+}
+function openShare(){
+  const code=familyCode(), link=location.origin+location.pathname+'#f='+code;
+  sheet(`<h3>רשימה משותפת</h3><div class="note">כל מי שמחובר עם אותו קוד רואה ועורך את אותה רשימה, אותם רגילים ואותה היסטוריה.</div>
+    <div class="glass" style="padding:12px;margin-top:10px"><div class="note" style="margin:0">הקוד המשפחתי שלכם</div><div style="font-weight:800;font-size:17px;direction:ltr;text-align:left;word-break:break-all">${esc(code)}</div></div>
+    <div class="foot"><button class="btn" id="cpl">העתקת קישור הצטרפות</button><button class="btn ghost" id="cpc">העתקת הקוד</button></div><div class="note" id="cpmsg" role="status"></div>
+    <h3 style="margin-top:18px">הצטרפות לרשימה קיימת</h3><div class="note">קיבלת קוד? הדביקי אותו כאן. הרשימה במכשיר הזה תוחלף ברשימה המשותפת.</div>
+    <input class="field" id="jc" placeholder="הדבקת קוד" style="direction:ltr" aria-label="קוד הצטרפות">
+    <div class="foot"><button class="btn" id="jbtn">הצטרפות</button><button class="btn soft" id="sclose">סגירה</button></div>`);
+  const copy=async t=>{ try{await navigator.clipboard.writeText(t); $('#cpmsg').textContent='הועתק. אפשר לשלוח בוואטסאפ.';}catch(e){ $('#cpmsg').textContent=t; } };
+  $('#cpl').onclick=()=>copy(link); $('#cpc').onclick=()=>copy(code); $('#sclose').onclick=closeSheet;
+  $('#jbtn').onclick=async()=>{ const v=$('#jc').value.trim().toLowerCase().replace(/^.*#f=/,''); if(codeId(v).length<24){ $('#cpmsg').textContent='הקוד לא תקין'; return; }
+    lsSet('family-code',v); state={items:[],regulars:[],history:[]}; saveLocal(); closeSheet(); await connect(); render(); };
 }
 
-// ---------- compare view ----------
-function renderCmp(){
+// ---------- render: compare ----------
+function cellTags(p,x,i){ if(!p) return ''; let t=p.status==='exact'?'<span class="tag ok">✓</span>':(x.guess&&x.guess[i]?'<span class="tag g">ניחוש</span>':'<span class="tag">דומה</span>');
+  if(p.normalized!=null) t+='<span class="tag">לפי מחיר ליחידה</span>'; if(p.promo) t+=`<span class="tag p" title="${esc(p.promo.text)}">${p.promo.club?'מועדון':(p.promo.applied?'מבצע':'מבצע בכמות')}</span>`; return t; }
+function renderCmp(c){
   const v=$('#v-cmp');
-  if(!items.length){ v.innerHTML='<div class="empty">אין עדיין מוצרים ברשימה.</div>'; return; }
-  const per=STORES.map((s,i)=>{ let t=0,reg=0,miss=[]; for(const x of items){const p=priceAt(x.codes[i],i,x.qty); if(p){t+=p.cost;reg+=p.reg;} else miss.push(x.name);} return {s,i,t,reg,miss}; });
-  // fair comparison: only items every chain has
-  const common=items.filter(x=>STORES.every((s,i)=>priceAt(x.codes[i],i,x.qty)));
-  const commonT=STORES.map((s,i)=>common.reduce((a,x)=>a+priceAt(x.codes[i],i,x.qty).cost,0));
-  const full=per.filter(p=>!p.miss.length);
-  const pool = full.length? full : per;
-  const best = pool.reduce((a,b)=> (full.length? a.t<=b.t : commonT[a.i]<=commonT[b.i]) ? a:b);
-  // split shopping: each item at its cheapest chain
-  let split=0, splitMiss=0; const where=STORES.map(()=>0);
-  for(const x of items){ let bi=-1,bc=Infinity; STORES.forEach((s,i)=>{const p=priceAt(x.codes[i],i,x.qty); if(p&&p.cost<bc){bc=p.cost;bi=i;}}); if(bi<0) splitMiss++; else {split+=bc; where[bi]++;} }
-  const cards=per.sort((a,b)=>(a.miss.length-b.miss.length)||(a.t-b.t)).map(p=>`
-    <div class="card store ${p===best?'best':''}"><div class="row"><div class="grow">
-      <div class="sname">${esc(p.s.name)}${p===best?'<span class="badge">הכי משתלם</span>':''}</div>
-      <div class="saddr">${esc(p.s.addr)}</div></div>
-      <div class="total">${fmt(p.t)}</div></div>
-      ${p.reg-p.t>0.01?`<div class="note">כולל מבצעים: חוסכים ${fmt(p.reg-p.t)}</div>`:''}
-      ${p.miss.length?`<div class="warnline">חסרים ${p.miss.length}: ${esc(p.miss.slice(0,4).join(', '))}${p.miss.length>4?'…':''}</div>`:''}
-    </div>`).join('');
-  const commonNote = common.length<items.length ? `<div class="card"><div class="small">השוואה הוגנת על ${common.length} המוצרים שיש בכל הרשתות:</div><div class="chips">${STORES.map((s,i)=>`<span class="chip">${esc(s.name)}: ${fmt(commonT[i])}</span>`).join('')}</div></div>`:'';
-  const splitUsed=where.filter(Boolean).length;
-  const splitNote = splitUsed>1 && !splitMiss && full.length && best.t-split>0.5 ? `<div class="card"><b>פיצול קניות:</b> אם קונים כל מוצר ברשת הזולה לו, הסל יוצא ${fmt(split)} — חיסכון של ${fmt(best.t-split)} לעומת ${esc(best.s.name)}, אבל בשתי עצירות או יותר.</div>`:'';
-  const rows=items.map(x=>{ const ps=STORES.map((s,i)=>priceAt(x.codes[i],i,x.qty)); const mn=Math.min(...ps.filter(Boolean).map(p=>p.cost));
-    return `<tr><td>${esc(x.name)}${x.qty!==1?` <span class="small">×${x.qty}</span>`:''}</td>${ps.map(p=>p?`<td class="num ${Math.abs(p.cost-mn)<0.005?'min':''}">${fmt(p.cost)}${p.cost<p.reg-0.001?'<div class="small">'+esc(p.promo[0])+'</div>':''}</td>`:'<td class="na">—</td>').join('')}</tr>`; }).join('');
-  v.innerHTML=cards+commonNote+splitNote+`
-    <div class="card" style="overflow-x:auto"><table><thead><tr><th>מוצר</th>${STORES.map(s=>`<th style="text-align:center">${esc(s.name)}</th>`).join('')}</tr></thead><tbody>${rows}</tbody></table>
-    <div class="note">מבצעי מועדון לא נכללים בחישוב. מחירי ירקות ופירות במשקל הם לפי ק״ג.</div></div>
-    <div class="foot"><button class="btn" id="done">סיימתי לקנות — לנקות את הרשימה</button></div>
-    <div id="confirm"></div>`;
-  $('#done').onclick=()=>{ $('#confirm').innerHTML='<div class="card">לנקות את כל הרשימה? <div class="foot"><button class="btn" id="yes">כן, לנקות</button><button class="btn ghost" id="no">ביטול</button></div></div>';
-    $('#yes').onclick=()=>{items=[];save();render();show('list');}; $('#no').onclick=()=>{$('#confirm').innerHTML='';}; };
+  if(!state.items.length){ v.innerHTML=`<div class="empty"><div class="e">📊</div><b>אין עדיין מה להשוות</b>הוסיפי פריטים לרשימה ונראה איפה הכי זול.</div>`; return; }
+  const cards=c.ranked.map(s=>`<div class="glass store ${s===c.best?'win':''}"><div class="row"><div class="grow"><div class="sname">${esc(s.store.name)}${s===c.best?'<span class="badge">הכי משתלם</span>':''}</div><div class="saddr">${esc(s.store.addr)}</div></div><div class="total">${num('st'+s.i,s.total)}</div></div>
+    <div class="note">${s.missing.length?`<span style="color:var(--warn)">חסרים ${s.missing.length}: ${esc(s.missing.slice(0,3).join(', '))}${s.missing.length>3?'…':''}</span> · `:'כל הפריטים קיימים · '}${s.guesses?`${s.guesses} ניחושים או מוצרים דומים`:'הכל מוצרים זהים'}${s.saved>0.05?` · כולל ${M(s.saved)} מבצעים`:''}</div></div>`).join('');
+  const sp=c.split, split = sp.stores.length>1 && !sp.missing && sp.saving>0.5 ? `<div class="glass store"><div class="sname">✂️ פיצול חכם</div><div class="note" style="font-size:14px;color:var(--ink)">אם קונים כל פריט בסניף שבו הוא הכי זול: <b>${M(sp.total)}</b>, חיסכון של <b>${M(sp.saving)}</b> מול ${esc(c.best.store.name)}, אבל ב־${sp.stores.length} עצירות (${sp.stores.map(i=>esc(STORES[i].name)).join(' + ')}).</div></div>`:'';
+  const narrow=c.rows.map(r=>`<div class="glass cmpcard"><h4>${esc(r.line.name)} <span class="note">× ${+(+r.line.qty).toFixed(2)}${r.line.unit==="יח'"?'':' '+esc(r.line.unit)}</span></h4>
+    ${r.cells.map((p,i)=>`<div class="cell ${r.cheapest[i]&&r.cells.filter(Boolean).length>1?'min':''}"><span class="st">${esc(STORES[i].name)}</span><span class="pn">${p?esc(p.name)+cellTags(p,r.line,i):'אין'}</span><span class="pp">${p?M(p.compareCost):''}</span></div>`).join('')}</div>`).join('');
+  const wide=`<div class="glass" style="padding:8px 12px;margin-top:10px;overflow-x:auto"><table class="cmp"><thead><tr><th>פריט</th>${STORES.map(s=>`<th>${esc(s.name)}</th>`).join('')}</tr></thead><tbody>
+    ${c.rows.map(r=>`<tr><td><b>${esc(r.line.name)}</b><div class="note" style="margin:0">× ${+(+r.line.qty).toFixed(2)}${r.line.unit==="יח'"?'':' '+esc(r.line.unit)}</div></td>${r.cells.map((p,i)=>p?`<td class="${r.cheapest[i]&&r.cells.filter(Boolean).length>1?'min':''}"><div class="pp" style="font-weight:800">${M(p.compareCost)}</div><div class="note" style="margin:0">${esc(p.name)}</div>${cellTags(p,r.line,i)}</td>`:'<td class="note">אין</td>').join('')}</tr>`).join('')}
+    </tbody><tfoot><tr><td>סה"כ</td>${c.stores.map(s=>`<td>${M(s.total)}<div class="note" style="margin:0;font-weight:400">${s.missing.length?`חסרים ${s.missing.length}`:''}${s.guesses?` · ${s.guesses} ניחושים`:''}</div></td>`).join('')}</tr></tfoot></table></div>`;
+  v.innerHTML=cards+split+`<h3 style="margin:22px 4px 4px">פירוט לפי פריט</h3><div class="narrow">${narrow}</div><div class="wide">${wide}</div>
+    <div class="note" style="padding:8px 4px">✓ = אותו ברקוד בדיוק · "דומה" או "ניחוש" = מוצר אחר שנבחר לפי השם · מוצר דומה בגודל אחר מחושב לפי המחיר ליחידה · מבצעי מועדון לא נכללים.</div>`;
 }
+
+// ---------- render: history ----------
+function renderHist(){
+  const v=$('#v-hist'); const h=state.history;
+  if(!h.length){ v.innerHTML=`<div class="empty"><div class="e">🧾</div><b>עוד אין קניות בהיסטוריה</b>אחרי "סיימתי קנייה" הקנייה תישמר כאן עם התאריך, הסניף והסכום.</div>`; return; }
+  const sum=h.reduce((a,x)=>a+(+x.total||0),0);
+  v.innerHTML=`<div class="note" style="padding:0 4px">${h.length} קניות · סה"כ ${M(sum)}</div>`+h.map((x,k)=>{ const d=new Date(x.date);
+    return `<details class="glass hist"><summary class="row" style="cursor:pointer;list-style:none"><div class="grow"><b>${esc(x.store)}</b><div class="note" style="margin:0">${d.toLocaleDateString('he-IL',{weekday:'short',day:'numeric',month:'numeric',year:'2-digit'})} · ${x.items.length} פריטים</div></div><div class="total" style="font-size:20px">${M(x.total)}</div></summary>
+      <div class="note">${x.items.map(i=>esc(i.name)).join(' · ')}</div><div class="foot"><button class="btn ghost" data-again="${k}" aria-label="הוספת הפריטים של הקנייה הזו לרשימה">להוסיף שוב לרשימה</button></div></details>`; }).join('');
+}
+$('#v-hist').addEventListener('click',e=>{ const b=e.target.closest('[data-again]'); if(!b) return; const h=state.history[+b.dataset.again];
+  for(const i of h.items) if(!state.items.some(x=>!x.bought&&L.norm(x.name)===L.norm(i.name))) state.items.push(Object.assign(clean(i),{id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),bought:false}));
+  commit(); show('list'); });
 
 // ---------- shell ----------
-function show(v){ document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.dataset.v===v)); $('#v-list').hidden=v!=='list'; $('#v-cmp').hidden=v!=='cmp'; render(); }
+function show(v){ view=v; document.querySelectorAll('.tab').forEach(t=>{const on=t.dataset.v===v; t.classList.toggle('on',on); t.setAttribute('aria-selected',on);});
+  for(const s of ['list','cmp','hist']) $('#v-'+s).hidden=s!==v; $('#dock').hidden=v!=='list'; render(); window.scrollTo({top:0}); }
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>show(t.dataset.v));
-function render(){ if(!DATA) return; renderList(); if(!$('#v-cmp').hidden) renderCmp(); }
+function render(){
+  if(!DATA) return;
+  const c=L.compare(DATA,state.items);
+  if(view==='list') renderList(c); else if(view==='cmp') renderCmp(c); else renderHist();
+  $('#cnt').textContent=state.items.length?`(${state.items.filter(x=>!x.bought).length})`:'';
+  runCounters();
+}
 loadPrices(); initDb();
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
